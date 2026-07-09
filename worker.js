@@ -17,6 +17,48 @@ export default {
       return json(200, { ok: true, message: 'Yamanist Discord worker is running.' }, corsHeaders);
     }
 
+    if (request.method === 'GET' && url.pathname === '/avatar') {
+      const userId = url.searchParams.get('userId') || '';
+      const avatarHash = url.searchParams.get('avatarHash') || '';
+      const isDefault = url.searchParams.get('isDefault') === '1' || url.searchParams.get('default') === '1';
+      const format = url.searchParams.get('format') || 'png';
+      const size = url.searchParams.get('size') || '256';
+
+      let avatarUrl = '';
+      if (isDefault) {
+        const defaultIndex = Number(url.searchParams.get('index') || 0);
+        avatarUrl = `https://cdn.discordapp.com/embed/avatars/${defaultIndex}.${format}`;
+      } else if (userId && avatarHash) {
+        avatarUrl = `https://cdn.discordapp.com/avatars/${encodeURIComponent(userId)}/${encodeURIComponent(avatarHash)}.${format}?size=${encodeURIComponent(size)}`;
+      } else {
+        return json(400, { error: 'userId and avatarHash are required for avatar proxying.' }, corsHeaders);
+      }
+
+      try {
+        const avatarResponse = await fetch(avatarUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0',
+          },
+        });
+
+        if (!avatarResponse.ok) {
+          return json(502, { error: 'Discord avatar fetch failed.', status: avatarResponse.status }, corsHeaders);
+        }
+
+        const contentType = avatarResponse.headers.get('content-type') || 'image/png';
+        return new Response(avatarResponse.body, {
+          status: 200,
+          headers: {
+            'content-type': contentType,
+            'cache-control': 'public, max-age=3600',
+            ...corsHeaders,
+          },
+        });
+      } catch {
+        return json(502, { error: 'Discord avatar fetch failed.' }, corsHeaders);
+      }
+    }
+
     if (request.method !== 'POST') {
       return json(404, { error: 'Not found.' }, corsHeaders);
     }
