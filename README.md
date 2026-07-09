@@ -219,15 +219,15 @@ Thanks to the following resources and platforms that helped shape this project:
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/yamanist0/yamanist-page.svg?style=for-the-badge
-[contributors-url]: https://github.com/yamanist0/yamanist-page/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/yamanist0/yamanist-page.svg?style=for-the-badge
+[contributors-url]: https://github.com/yamanist0/yamanist0.github.io/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/yamanist0/yamanist0.github.io.svg?style=for-the-badge
 [forks-url]: https://github.com/yamanist0/yamanist-page/network/members
-[stars-shield]: https://img.shields.io/github/stars/yamanist0/yamanist-page.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/yamanist0/yamanist0.github.io.svg?style=for-the-badge
 [stars-url]: https://github.com/yamanist0/yamanist-page/stargazers
-[issues-shield]: https://img.shields.io/github/issues/yamanist0/yamanist-page.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/yamanist0/yamanist0.github.io.svg?style=for-the-badge
 [issues-url]: https://github.com/yamanist0/yamanist-page/issues
 [product-screenshot]: https://placehold.co/800x400?text=Yamanist+Page
-[license-shield]: https://img.shields.io/github/license/yamanist0/yamanist-page.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/yamanist0/yamanist0.github.io.svg?style=for-the-badge
 [license-url]: https://github.com/yamanist0/yamanist-page/blob/main/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/ahmet-yaman-alio%C4%9Flu-072822343/
