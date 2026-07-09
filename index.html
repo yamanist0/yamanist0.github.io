@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>YAMANIST | The Terminal Grid</title>
+<link rel="icon" href="images/icon.ico" type="image/x-icon"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Geist:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-container": "#474746",
+                      "on-primary-fixed-variant": "#454747",
+                      "on-background": "#e5e2e1",
+                      "inverse-on-surface": "#313030",
+                      "inverse-surface": "#e5e2e1",
+                      "surface-container-low": "#1c1b1b",
+                      "surface-container-highest": "#353534",
+                      "error-container": "#93000a",
+                      "surface": "#131313",
+                      "secondary-fixed-dim": "#c8c6c5",
+                      "secondary-fixed": "#e5e2e1",
+                      "on-secondary-fixed-variant": "#474746",
+                      "surface-variant": "#353534",
+                      "on-error-container": "#ffdad6",
+                      "primary-fixed": "#e2e2e2",
+                      "outline": "#8e9192",
+                      "on-tertiary": "#303030",
+                      "on-surface-variant": "#c4c7c8",
+                      "on-primary-container": "#636565",
+                      "inverse-primary": "#5d5f5f",
+                      "background": "#131313",
+                      "on-tertiary-container": "#656464",
+                      "outline-variant": "#444748",
+                      "on-secondary": "#313030",
+                      "on-surface": "#e5e2e1",
+                      "on-secondary-fixed": "#1c1b1b",
+                      "on-tertiary-fixed-variant": "#474747",
+                      "surface-bright": "#3a3939",
+                      "on-error": "#690005",
+                      "primary": "#ffffff",
+                      "on-tertiary-fixed": "#1b1c1c",
+                      "surface-container": "#201f1f",
+                      "surface-dim": "#131313",
+                      "error": "#ffb4ab",
+                      "tertiary-fixed": "#e4e2e1",
+                      "primary-container": "#e2e2e2",
+                      "on-primary-fixed": "#1a1c1c",
+                      "tertiary": "#ffffff",
+                      "tertiary-container": "#e4e2e1",
+                      "surface-container-high": "#2a2a2a",
+                      "tertiary-fixed-dim": "#c8c6c6",
+                      "secondary": "#c8c6c5",
+                      "primary-fixed-dim": "#c6c6c7",
+                      "on-secondary-container": "#b7b5b4",
+                      "surface-tint": "#c6c6c7",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-primary": "#2f3131"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "container-max": "1440px",
+                      "margin-mobile": "20px",
+                      "margin-desktop": "64px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "code-label": [
+                              "JetBrains Mono"
+                      ],
+                      "display-lg": [
+                              "Geist"
+                      ],
+                      "body-lg": [
+                              "Geist"
+                      ],
+                      "headline-md": [
+                              "Geist"
+                      ],
+                      "body-sm": [
+                              "Geist"
+                      ],
+                      "display-lg-mobile": [
+                              "Geist"
+                      ]
+              },
+              "fontSize": {
+                      "code-label": [
+                              "12px",
+                              {
+                                      "lineHeight": "1",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "display-lg": [
+                              "72px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.04em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-md": [
+                              "32px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "1.5",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-lg-mobile": [
+                              "40px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        /* Custom scrollbar for terminal feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #131313;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555555;
+        }
+
+        @keyframes float-card {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .repo-card {
+            animation: float-card 5s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        .repo-card-2 {
+            animation-duration: 5.8s;
+            animation-delay: 0.4s;
+        }
+
+        .repo-card-3 {
+            animation-duration: 6.4s;
+            animation-delay: 0.8s;
+        }
+
+        .brand-char {
+            color: #e5e2e1;
+            transition: color 0.08s linear;
+        }
+
+        .brand-char.active {
+            color: #000000;
+        }
+
+        .nav-link.active {
+            color: #ffffff;
+            border-bottom: 1px solid #ffffff;
+            padding-bottom: 0.25rem;
+        }
+
+        .drag-handle {
+            display: none;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            opacity: 0.35;
+            transition: opacity 0.2s ease;
+            cursor: grab;
+            z-index: 10;
+        }
+
+        .admin-draggable .drag-handle {
+            display: block;
+        }
+
+        .dragging {
+            opacity: 0.5;
+        }
+
+        .dragging-over {
+            transform: translateY(-2px);
+            box-shadow: 0 0 0 1px rgba(165, 180, 252, 0.4);
+        }
+
+        .repo-card {
+            position: relative;
+        }
+
+        .tech-chip {
+            color: #e5e2e1;
+            transition: color 0.08s linear;
+        }
+
+        .tech-chip.active {
+            color: #000000;
+        }
+      </style>
+</head>
+<body class="bg-background text-on-background font-body-sm min-h-screen flex flex-col selection:bg-primary selection:text-background">
+<header id="top" class="bg-surface/70 backdrop-blur-xl font-code-label text-code-label fixed top-0 w-full z-50 border-b border-outline-variant flat no shadows">
+<div class="flex justify-between items-center px-gutter py-4 w-full max-w-container-max mx-auto">
+<div id="brand-title" class="font-display-lg text-display-lg-mobile md:font-display-lg md:text-display-lg tracking-tighter text-primary"></div>
+<script>
+  const brandTitle = document.getElementById('brand-title');
+  if (brandTitle) {
+    const text = 'YAMANIST';
+    const chars = Array.from(text);
+    brandTitle.innerHTML = chars.map((char) => `<span class="brand-char">${char}</span>`).join('');
+
+    const spans = Array.from(brandTitle.querySelectorAll('.brand-char'));
+    let direction = 'left';
+
+    function resetChars() {
+      spans.forEach((span) => span.classList.remove('active'));
+    }
+
+    function runCycle() {
+      resetChars();
+      let index = direction === 'left' ? 0 : spans.length - 1;
+      const step = direction === 'left' ? 1 : -1;
+
+      function paintNext() {
+        if (index < 0 || index >= spans.length) {
+          const lastActive = spans[direction === 'left' ? spans.length - 1 : 0];
+          if (lastActive) {
+            lastActive.classList.add('active');
+            setTimeout(() => {
+              lastActive.classList.remove('active');
+              direction = direction === 'left' ? 'right' : 'left';
+              setTimeout(runCycle, 2000);
+            }, 100);
+          } else {
+            direction = direction === 'left' ? 'right' : 'left';
+            setTimeout(runCycle, 2000);
+          }
+          return;
+        }
+
+        resetChars();
+        spans[index].classList.add('active');
+        index += step;
+        setTimeout(paintNext, 100);
+      }
+
+      paintNext();
+    }
+
+    window.addEventListener('load', () => {
+      runCycle();
+      runTechCycle();
+    });
+  }
+</script>
+<nav class="hidden md:flex gap-8">
+<a class="nav-link text-on-surface-variant hover:text-primary transition-colors hover:bg-white/10 transition-all active:scale-95 duration-200 px-2 py-1 rounded" href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'}); event.preventDefault();">HOME</a>
+<a class="nav-link text-on-surface-variant hover:text-primary transition-colors hover:bg-white/10 transition-all active:scale-95 duration-200 px-2 py-1 rounded" href="#repos" onclick="event.preventDefault(); document.getElementById('repos').scrollIntoView({behavior:'smooth', block:'start'});">REPOS</a>
+<a class="nav-link text-on-surface-variant hover:text-primary transition-colors hover:bg-white/10 transition-all active:scale-95 duration-200 px-2 py-1 rounded" href="#note" onclick="event.preventDefault(); document.getElementById('note').scrollIntoView({behavior:'smooth', block:'start'});">NOTE</a>
+</nav>
+<script>
+  const navLinks = Array.from(document.querySelectorAll('.nav-link'));
+  const homeLink = document.querySelector('.nav-link[href="#top"]');
+  const reposLink = document.querySelector('.nav-link[href="#repos"]');
+  const noteLink = document.querySelector('.nav-link[href="#note"]');
+
+  function updateActiveNav() {
+    const scrollY = window.scrollY;
+    const offset = 180;
+    const bottomReached = window.innerHeight + scrollY >= document.body.scrollHeight - 80;
+
+    let activeLink = homeLink;
+
+    if (bottomReached) {
+      activeLink = noteLink;
+    } else if (document.getElementById('repos') && scrollY + offset >= document.getElementById('repos').offsetTop) {
+      activeLink = reposLink;
+    }
+
+    navLinks.forEach((link) => {
+      const isActive = link === activeLink;
+      link.classList.toggle('active', isActive);
+      link.classList.toggle('text-primary', isActive);
+      link.classList.toggle('text-on-surface-variant', !isActive);
+      link.classList.toggle('border-b', false);
+      link.classList.toggle('border-primary', false);
+      link.classList.toggle('pb-1', false);
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveNav);
+  window.addEventListener('load', updateActiveNav);
+</script>
+<button class="text-primary hover:bg-white/10 transition-all active:scale-95 duration-200 p-2 rounded">
+<span class="material-symbols-outlined">terminal</span>
+</button>
+</div>
+</header>
+<main class="flex-grow pt-[120px] px-margin-mobile md:px-margin-desktop w-full max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-12 gap-gutter mb-24">
+<section class="md:col-span-12 border border-outline-variant bg-surface-container-lowest p-6 rounded-DEFAULT shadow-sm mb-8 flex flex-wrap gap-4 items-center" id="stack">
+<span class="font-code-label text-code-label text-on-surface-variant uppercase">&gt; _stack.init()</span>
+<div id="tech-stack" class="flex flex-wrap gap-3">
+<span class="tech-chip px-3 py-1 bg-surface-container-highest text-primary font-code-label text-code-label rounded-sm border border-outline-variant hover:border-primary transition-colors cursor-default">Python</span>
+<span class="tech-chip px-3 py-1 bg-surface-container-highest text-primary font-code-label text-code-label rounded-sm border border-outline-variant hover:border-primary transition-colors cursor-default">Lua</span>
+<span class="tech-chip px-3 py-1 bg-surface-container-highest text-primary font-code-label text-code-label rounded-sm border border-outline-variant hover:border-primary transition-colors cursor-default">Java</span>
+<span class="tech-chip px-3 py-1 bg-surface-container-highest text-primary font-code-label text-code-label rounded-sm border border-outline-variant hover:border-primary transition-colors cursor-default">JS</span>
+<span class="tech-chip px-3 py-1 bg-surface-container-highest text-primary font-code-label text-code-label rounded-sm border border-outline-variant hover:border-primary transition-colors cursor-default">C++</span>
+<span class="tech-chip px-3 py-1 bg-surface-container-highest text-primary font-code-label text-code-label rounded-sm border border-outline-variant hover:border-primary transition-colors cursor-default">C#</span>
+<span class="tech-chip px-3 py-1 bg-surface-container-highest text-primary font-code-label text-code-label rounded-sm border border-outline-variant hover:border-primary transition-colors cursor-default">C</span>
+</div>
+</section>
+<script>
+  const techStack = document.getElementById('tech-stack');
+  if (techStack) {
+    const chips = Array.from(techStack.querySelectorAll('.tech-chip'));
+
+    function resetTechChips() {
+      chips.forEach((chip) => chip.classList.remove('active'));
+    }
+
+    function runTechCycle() {
+      resetTechChips();
+      let direction = techStack.dataset.direction || 'left';
+      const step = direction === 'left' ? 1 : -1;
+      let index = direction === 'left' ? 0 : chips.length - 1;
+      const endReached = () => direction === 'left' ? index >= chips.length : index < 0;
+
+      function paintNext() {
+        if (endReached()) {
+          const lastChip = chips[direction === 'left' ? chips.length - 1 : 0];
+          if (lastChip) {
+            lastChip.classList.add('active');
+            setTimeout(() => {
+              lastChip.classList.remove('active');
+              techStack.dataset.direction = direction === 'left' ? 'right' : 'left';
+              setTimeout(runTechCycle, 2000);
+            }, 100);
+          } else {
+            techStack.dataset.direction = direction === 'left' ? 'right' : 'left';
+            setTimeout(runTechCycle, 2000);
+          }
+          return;
+        }
+
+        resetTechChips();
+        if (chips[index]) {
+          chips[index].classList.add('active');
+        }
+        index += step;
+        setTimeout(paintNext, 100);
+      }
+
+      paintNext();
+    }
+
+  }
+</script>
+<div class="md:col-span-5 flex flex-col gap-gutter">
+<section class="border border-outline-variant bg-surface-container-low p-6 md:p-8 rounded-DEFAULT relative overflow-hidden group" id="about">
+<div class="absolute inset-0 bg-surface/20 backdrop-blur-md -z-10"></div>
+<div class="mb-8">
+<h1 class="font-headline-md text-headline-md text-primary mb-4">ABOUT ME</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md">
+                        Problem solver pushing the limits of software and hardware. Python, JS, C++, C#, Java, etc.. Passionate about cybersecurity, reverse engineering and IoT/Robotic
+                    </p>
+</div>
+<div class="space-y-4 font-code-label text-code-label text-on-surface-variant">
+<div class="flex justify-between border-b border-outline-variant pb-2">
+<span>STATUS</span>
+<span id="discord-status" class="text-primary flex items-center gap-2"><span id="discord-status-dot" class="w-2 h-2 rounded-full bg-green-500/50"></span><span id="discord-status-text">ONLINE</span></span>
+</div>
+<div class="flex justify-between border-b border-outline-variant pb-2">
+<span>LOCATION</span>
+<span>TURKEY</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant pb-2">
+<span>IS_ALIVE</span>
+<span>YES</span>
+</div>
+</div>
+</section>
+<section id="discord-card" class="border border-outline-variant bg-surface-container-low p-6 md:p-8 rounded-DEFAULT relative overflow-hidden group mb-6">
+  <div class="absolute inset-0 bg-surface/20 backdrop-blur-md -z-10"></div>
+  <div class="flex flex-col md:flex-row items-center gap-4">
+    <img id="discord-avatar" class="w-28 h-28 rounded-full border border-outline-variant object-cover" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="Discord avatar" />
+    <div class="flex-1 space-y-3">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <h2 class="font-headline-md text-headline-md text-primary">Discord Profile</h2>
+          <p id="discord-display-name" class="font-body-lg text-body-lg text-on-surface-variant">Loading user...</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span id="discord-status-dot-card" class="w-3 h-3 rounded-full bg-red-500/50"></span>
+          <span id="discord-status-card" class="font-code-label text-code-label text-on-surface-variant">OFFLINE</span>
+        </div>
+      </div>
+      <div class="bg-surface-container-high p-4 rounded-DEFAULT border border-outline-variant">
+        <div class="font-code-label text-code-label text-on-surface-variant uppercase mb-2">Current Status</div>
+        <div class="flex items-center gap-2 text-primary font-body-sm" id="discord-status-detail">
+          <span>Loading status…</span>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-on-surface-variant font-code-label text-code-label">
+        <div>
+          <div class="uppercase text-on-surface-variant text-xs mb-1">Discord Username</div>
+          <div id="discord-username">-</div>
+        </div>
+        <div>
+          <div class="uppercase text-on-surface-variant text-xs mb-1">Custom Status</div>
+          <div id="discord-custom-status">-</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="border border-outline-variant rounded-DEFAULT h-64 overflow-hidden relative group">
+<img class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500" data-alt="A dark, abstract digital visualization representing encrypted data streams. Minimalist aesthetic, brutalist structure. Black background with stark white and faint silver geometric lines flowing like code through a server structure. Cyber-security theme, professional, high contrast." src="banner.jpeg"/>
+<div class="absolute bottom-4 left-4 font-code-label text-code-label bg-surface/80 px-2 py-1 border border-outline-variant text-on-surface">SYS_VISUAL_01</div>
+</div>
+</div>
+<div class="md:col-span-7 border border-outline-variant bg-surface-container-low rounded-DEFAULT flex flex-col h-[800px]">
+<div class="border-b border-outline-variant p-4 flex justify-between items-center bg-surface-container-lowest rounded-t-DEFAULT">
+<span class="font-code-label text-code-label text-primary">~/workspace/REPOS</span>
+<div class="flex gap-2">
+<span class="w-3 h-3 rounded-full border border-outline-variant bg-surface"></span>
+<span class="w-3 h-3 rounded-full border border-outline-variant bg-surface"></span>
+<span class="w-3 h-3 rounded-full border border-outline-variant bg-surface"></span>
+</div>
+</div>
+<section class="flex-grow overflow-y-auto p-6 space-y-6" id="repos">
+  <div id="repo-loading" class="text-on-surface-variant font-code-label text-center">Loading repositories...</div>
+  <div id="repo-empty" class="hidden text-on-surface-variant font-code-label text-center">No repositories found.</div>
+  <div id="repo-list" class="space-y-6"></div>
+</section>
+</div>
+<section class="md:col-span-12 mt-8" id="note">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-DEFAULT p-4 flex flex-col md:flex-row items-center gap-4">
+<span class="font-code-label text-code-label text-primary">&gt;_</span>
+<input id="dynamic-placeholder-input" class="flex-grow bg-transparent border-none focus:ring-0 text-primary font-code-label text-code-label placeholder-on-surface-variant/50 w-full" placeholder="Leave a note or command..." type="text"/>
+<div class="flex gap-2">
+<button id="execute-command" class="bg-primary text-background font-code-label text-code-label px-6 py-2 rounded-sm hover:bg-secondary-fixed transition-colors whitespace-nowrap">EXECUTE</button>
+<button id="save-order-button" class="hidden bg-surface text-primary font-code-label text-code-label px-6 py-2 rounded-sm border border-outline-variant hover:bg-surface/90 transition-colors whitespace-nowrap">SAVE ORDER</button>
+</div>
+</div>
+<div id="command-status-message" class="mt-3 text-on-surface-variant font-code-label text-sm"></div>
+<div id="admin-sort-hint" class="mt-2 hidden text-primary font-code-label text-sm">Admin drag sort mode enabled. Drag repos by the handle, then save the new order.</div>
+</section>
+<script>
+  const placeholderInput = document.getElementById('dynamic-placeholder-input');
+  if (placeholderInput) {
+    const phrases = [
+      'Leave a note or command...',
+      'I am waiting for your note...',
+      'Send your next request...',
+      'Type your mission here...',
+      'Awaiting your command now...'
+    ];
+
+    let currentText = placeholderInput.getAttribute('placeholder') || '';
+    let targetText = phrases[Math.floor(Math.random() * phrases.length)];
+    let isDeleting = false;
+
+    function updatePlaceholder() {
+      if (!isDeleting) {
+        if (currentText.length < targetText.length) {
+          currentText = targetText.slice(0, currentText.length + 1);
+          placeholderInput.setAttribute('placeholder', currentText);
+          setTimeout(updatePlaceholder, 50);
+          return;
+        }
+
+        isDeleting = true;
+        setTimeout(updatePlaceholder, 2000);
+        return;
+      }
+
+      if (currentText.length > 0) {
+        currentText = currentText.slice(0, -1);
+        placeholderInput.setAttribute('placeholder', currentText);
+        setTimeout(updatePlaceholder, 50);
+        return;
+      }
+
+      isDeleting = false;
+      const nextPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+      targetText = nextPhrase === targetText ? phrases[(phrases.indexOf(nextPhrase) + 1) % phrases.length] : nextPhrase;
+      setTimeout(updatePlaceholder, 400);
+    }
+
+    window.addEventListener('load', updatePlaceholder);
+  }
+</script>
+<script>
+  let draggedCard = null;
+  let dragDisabled = false;
+  let adminMode = false;
+
+  async function loadGitHubRepos() {
+    const repoList = document.getElementById('repo-list');
+    const repoLoading = document.getElementById('repo-loading');
+    const repoEmpty = document.getElementById('repo-empty');
+    if (!repoList) return;
+
+    adminMode = sessionStorage.getItem('adminEnabled') === 'true';
+    const saveButton = document.getElementById('save-order-button');
+    const adminHint = document.getElementById('admin-sort-hint');
+    if (adminMode) {
+      saveButton?.classList.remove('hidden');
+      adminHint?.classList.remove('hidden');
+    } else {
+      saveButton?.classList.add('hidden');
+      adminHint?.classList.add('hidden');
+    }
+
+    try {
+      const response = await fetch('https://api.github.com/users/yamanist0/repos?sort=pushed&per_page=20');
+      if (!response.ok) throw new Error(`GitHub API returned ${response.status}`);
+      const repos = await response.json();
+      repoLoading?.classList.add('hidden');
+      if (!Array.isArray(repos) || repos.length === 0) {
+        repoEmpty?.classList.remove('hidden');
+        return;
+      }
+
+      repoEmpty?.classList.add('hidden');
+      repoList.innerHTML = '';
+
+      const order = await fetchRepoOrder();
+      const sortedRepos = sortReposByOrder(repos, order?.repoOrder);
+      const isAdmin = adminMode;
+
+      sortedRepos.forEach((repo) => {
+        const card = document.createElement('article');
+        card.className = 'group border border-outline-variant hover:border-primary/50 transition-colors rounded-DEFAULT p-5 bg-surface/50 backdrop-blur-sm cursor-pointer relative overflow-hidden repo-card';
+        card.setAttribute('draggable', isAdmin ? 'true' : 'false');
+        card.dataset.fullName = repo.full_name || `${repo.owner?.login}/${repo.name}`;
+        if (isAdmin) {
+          card.classList.add('admin-draggable');
+        }
+
+        let dragStarted = false;
+
+        card.innerHTML = `
+          <span class="material-symbols-outlined drag-handle" title="Drag to reorder">drag_indicator</span>
+          <div class="absolute left-0 top-0 h-full w-1 bg-primary/0 group-hover:bg-primary/50 transition-colors"></div>
+          <div class="flex justify-between items-start mb-3">
+            <h3 class="font-headline-md text-[24px] font-semibold text-primary">${repo.name}</h3>
+            <span class="font-code-label text-code-label px-2 py-1 border border-outline-variant rounded-sm text-on-surface-variant">${repo.language || 'Unknown'}</span>
+          </div>
+          <p class="font-body-sm text-body-sm text-on-surface-variant mb-4">${repo.description || 'No description provided.'}</p>
+          <div class="flex gap-4 font-code-label text-code-label text-on-surface-variant">
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">star</span> ${repo.stargazers_count}</span>
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">fork_right</span> ${repo.forks_count}</span>
+          </div>
+        `;
+
+        card.addEventListener('click', (event) => {
+          if (dragStarted) {
+            dragStarted = false;
+            event.preventDefault();
+            return;
+          }
+          window.open(repo.html_url, '_blank', 'noopener');
+        });
+
+        card.addEventListener('dragstart', (event) => {
+          if (!adminMode) {
+            event.preventDefault();
+            return;
+          }
+          dragStarted = true;
+          event.dataTransfer.effectAllowed = 'move';
+          event.dataTransfer.setData('text/plain', card.dataset.fullName || '');
+          draggedCard = card;
+          card.classList.add('dragging');
+        });
+
+        card.addEventListener('dragend', () => {
+          card.classList.remove('dragging');
+          draggedCard = null;
+          dragStarted = false;
+        });
+
+        card.addEventListener('dragover', (event) => {
+          if (!adminMode || dragDisabled || !draggedCard) return;
+          event.preventDefault();
+          const target = event.currentTarget;
+          if (target === draggedCard) return;
+          const rect = target.getBoundingClientRect();
+          const next = event.clientY - rect.top > rect.height / 2;
+          repoList.insertBefore(draggedCard, next ? target.nextSibling : target);
+        });
+
+        card.addEventListener('drop', async (event) => {
+          if (!adminMode) return;
+          event.preventDefault();
+          await saveAdminRepoOrder();
+        });
+
+        card.addEventListener('dragenter', () => {
+          if (!adminMode) return;
+          card.classList.add('dragging-over');
+        });
+
+        card.addEventListener('dragleave', () => {
+          card.classList.remove('dragging-over');
+        });
+
+        repoList.appendChild(card);
+      });
+    } catch (error) {
+      repoLoading.textContent = 'Unable to load repositories.';
+      console.error(error);
+    }
+  }
+
+  function sortReposByOrder(repos, order) {
+    if (!Array.isArray(order) || order.length === 0) {
+      return repos.sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
+    }
+
+    const orderMap = new Map(order.map((fullName, index) => [fullName, index]));
+    const known = [];
+    const unknown = [];
+
+    repos.forEach((repo) => {
+      const fullName = repo.full_name || `${repo.owner?.login}/${repo.name}`;
+      if (orderMap.has(fullName)) {
+        known.push({ repo, index: orderMap.get(fullName) });
+      } else {
+        unknown.push(repo);
+      }
+    });
+
+    known.sort((a, b) => a.index - b.index);
+    unknown.sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
+
+    return [...known.map((item) => item.repo), ...unknown];
+  }
+
+  async function fetchRepoOrder() {
+    try {
+      const response = await fetch('/api/admin/repos/order');
+      if (!response.ok) return null;
+      return await response.json();
+    } catch {
+      return null;
+    }
+  }
+
+  async function saveAdminRepoOrder() {
+    const statusMessage = document.getElementById('command-status-message');
+    const adminPassword = sessionStorage.getItem('adminPassword');
+    if (!adminPassword) {
+      statusMessage.textContent = 'Admin password is required to save order.';
+      statusMessage.className = 'mt-3 text-red-500 font-code-label text-sm';
+      return;
+    }
+
+    const repoList = document.getElementById('repo-list');
+    if (!repoList) return;
+    const repoOrder = Array.from(repoList.querySelectorAll('article')).map((card) => card.dataset.fullName).filter(Boolean);
+
+    try {
+      const response = await fetch('/api/admin/repos/order/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: adminPassword, repoOrder }),
+      });
+
+      if (!response.ok) {
+        const result = await response.json();
+        statusMessage.textContent = result.error || 'Unable to save admin order.';
+        statusMessage.className = 'mt-3 text-red-500 font-code-label text-sm';
+        return;
+      }
+
+      statusMessage.textContent = 'Repo order saved.';
+      statusMessage.className = 'mt-3 text-primary font-code-label text-sm';
+    } catch (error) {
+      statusMessage.textContent = 'Unable to save admin order.';
+      statusMessage.className = 'mt-3 text-red-500 font-code-label text-sm';
+      console.error(error);
+    }
+  }
+
+  async function submitAdminCommand(command) {
+    const statusMessage = document.getElementById('command-status-message');
+    if (command.trim() === '/admin remove') {
+      sessionStorage.removeItem('adminEnabled');
+      sessionStorage.removeItem('adminPassword');
+      document.getElementById('save-order-button')?.classList.add('hidden');
+      document.getElementById('admin-sort-hint')?.classList.add('hidden');
+      statusMessage.textContent = 'Admin mode removed. Drag ordering is now disabled.';
+      statusMessage.className = 'mt-3 text-primary font-code-label text-sm';
+      await loadGitHubRepos();
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/admin/repos/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ command }),
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        statusMessage.textContent = result.error || 'Command failed.';
+        statusMessage.className = 'mt-3 text-red-500 font-code-label text-sm';
+        return;
+      }
+
+      statusMessage.textContent = 'Admin order applied. Repo order is now fixed for all visitors.';
+      statusMessage.className = 'mt-3 text-primary font-code-label text-sm';
+      sessionStorage.setItem('adminEnabled', 'true');
+      const password = command.slice(7).trim();
+      sessionStorage.setItem('adminPassword', password);
+      document.getElementById('admin-sort-hint')?.classList.remove('hidden');
+      await loadGitHubRepos();
+    } catch (error) {
+      statusMessage.textContent = 'Unable to apply admin command.';
+      statusMessage.className = 'mt-3 text-red-500 font-code-label text-sm';
+      console.error(error);
+    }
+  }
+
+  function setupCommandHandler() {
+    const commandInput = document.getElementById('dynamic-placeholder-input');
+    const executeButton = document.getElementById('execute-command');
+    const saveButton = document.getElementById('save-order-button');
+    const adminHint = document.getElementById('admin-sort-hint');
+    if (!commandInput || !executeButton || !saveButton) return;
+
+    if (sessionStorage.getItem('adminEnabled') === 'true') {
+      adminHint?.classList.remove('hidden');
+      saveButton.classList.remove('hidden');
+    }
+
+    const runCommand = async () => {
+      const command = commandInput.value.trim();
+      if (!command) return;
+
+      // Clear the input immediately when anything is submitted
+      commandInput.value = '';
+
+      if (command.startsWith('/admin ')) {
+        await submitAdminCommand(command);
+        return;
+      }
+
+      const statusMessage = document.getElementById('command-status-message');
+      try {
+        const response = await fetch('https://calm-wood-a478.ugivvvv.workers.dev/', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            message: command,
+            source: 'note',
+            username: 'Yamanist Site',
+          }),
+        });
+
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          statusMessage.textContent = data.error || 'Message could not be sent.';
+          statusMessage.className = 'mt-3 text-red-500 font-code-label text-sm';
+          return;
+        }
+
+        statusMessage.textContent = 'Your message was forwarded through the worker to the Discord webhook.';
+        statusMessage.className = 'mt-3 text-green-400 font-code-label text-sm';
+      } catch (error) {
+        statusMessage.textContent = 'An error occurred while sending the message.';
+        statusMessage.className = 'mt-3 text-red-500 font-code-label text-sm';
+        console.error(error);
+      }
+    };
+
+    executeButton.addEventListener('click', runCommand);
+    saveButton.addEventListener('click', saveAdminRepoOrder);
+    commandInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        runCommand();
+      }
+    });
+  }
+
+  window.addEventListener('load', () => {
+    loadGitHubRepos();
+    setupCommandHandler();
+  });
+</script>
+<script>
+  async function updateDiscordStatus() {
+    const statusEl = document.getElementById('discord-status');
+    const statusDot = document.getElementById('discord-status-dot');
+    const statusTextEl = document.getElementById('discord-status-text');
+    const statusCardEl = document.getElementById('discord-status-card');
+    const statusDotCard = document.getElementById('discord-status-dot-card');
+    const avatarEl = document.getElementById('discord-avatar');
+    const displayNameEl = document.getElementById('discord-display-name');
+    const usernameEl = document.getElementById('discord-username');
+    const customStatusEl = document.getElementById('discord-custom-status');
+    const statusDetailEl = document.getElementById('discord-status-detail');
+
+    function formatStatusText(presence) {
+      return presence === 'online' ? 'ONLINE' : 'OFFLINE';
+    }
+
+    try {
+      const res = await fetch('https://api.lanyard.rest/v1/users/1240987171989749783');
+      const json = await res.json();
+      const data = json.data;
+      if (!data) throw new Error('No data');
+
+      const presence = data.discord_status === 'online' ? 'online' : 'offline';
+      const statusText = formatStatusText(presence);
+      const avatarHash = data.discord_user?.avatar;
+      const displayName = data.discord_user?.display_name || data.discord_user?.global_name || data.discord_user?.username || 'Unknown';
+      const username = `${data.discord_user?.username || 'unknown'}#${data.discord_user?.discriminator || '0000'}`;
+      const customActivity = data.activities?.find((act) => act.type === 4 && act.name === 'Custom Status');
+      const activityEmoji = customActivity?.emoji?.name || '';
+      const customState = customActivity?.state || 'No custom status';
+
+      const avatarUrl = avatarHash
+        ? `https://cdn.discordapp.com/avatars/1240987171989749783/${avatarHash}.png`
+        : 'https://cdn.discordapp.com/embed/avatars/0.png';
+
+      if (avatarEl) {
+        avatarEl.src = avatarUrl;
+      }
+      if (displayNameEl) {
+        displayNameEl.textContent = displayName;
+      }
+      if (usernameEl) {
+        usernameEl.textContent = username;
+      }
+      if (customStatusEl) {
+        customStatusEl.textContent = customState;
+      }
+      if (statusDetailEl) {
+        statusDetailEl.innerHTML = `${activityEmoji ? `<span>${activityEmoji}</span>` : ''}<span>${customState}</span>`;
+      }
+
+      const dotClass = presence === 'online' ? 'bg-green-500/50' : 'bg-red-500/50';
+      if (statusDot) statusDot.className = `w-2 h-2 rounded-full ${dotClass}`;
+      if (statusDotCard) statusDotCard.className = `w-3 h-3 rounded-full ${dotClass}`;
+
+      const statusTextEl = document.getElementById('discord-status-text');
+      if (statusEl) {
+        statusEl.className = `flex items-center gap-2 ${presence === 'online' ? 'text-primary' : 'text-on-surface-variant'}`;
+      }
+      if (statusTextEl) {
+        statusTextEl.textContent = statusText;
+      }
+      if (statusCardEl) {
+        statusCardEl.textContent = statusText;
+        statusCardEl.className = `font-code-label text-code-label ${presence === 'online' ? 'text-primary' : 'text-on-surface-variant'}`;
+      }
+    } catch (err) {
+      const statusTextEl = document.getElementById('discord-status-text');
+      if (statusEl) statusEl.className = 'flex items-center gap-2 text-on-surface-variant';
+      if (statusTextEl) statusTextEl.textContent = 'OFFLINE';
+      if (statusCardEl) statusCardEl.textContent = 'OFFLINE';
+      if (statusDot) statusDot.className = 'w-2 h-2 rounded-full bg-red-500/50';
+      if (statusDotCard) statusDotCard.className = 'w-3 h-3 rounded-full bg-red-500/50';
+      if (statusDetailEl) statusDetailEl.textContent = 'No status available';
+      if (avatarEl) avatarEl.src = 'https://cdn.discordapp.com/embed/avatars/0.png';
+      if (displayNameEl) displayNameEl.textContent = 'Unknown';
+      if (usernameEl) usernameEl.textContent = 'unknown#0000';
+      if (customStatusEl) customStatusEl.textContent = '-';
+    }
+  }
+
+  window.addEventListener('load', updateDiscordStatus);
+</script>
+</main>
+<footer class="bg-background font-code-label text-code-label w-full py-12 border-t border-outline-variant flat no shadows">
+<div class="flex flex-col md:flex-row justify-between items-center gap-4 px-margin-desktop w-full max-w-container-max mx-auto">
+<div class="text-secondary">
+                YAMANIST [STAY SECURE SUPPORT OPENSOURCE]
+            </div>
+<nav class="flex gap-6">
+<a class="text-primary hover:text-primary underline decoration-1 transition-opacity duration-300" href="https://github.com/yamanist0" target="_blank" rel="noopener noreferrer">GITHUB</a>
+<a class="text-on-secondary-container hover:text-primary underline decoration-1 transition-opacity duration-300" href="https://www.linkedin.com/in/ahmet-yaman-alio%C4%9Flu-072822343/" target="_blank" rel="noopener noreferrer">LINKEDIN</a>
+<a class="text-on-secondary-container hover:text-primary underline decoration-1 transition-opacity duration-300" href="https://github.com/yamanist0/yamanist-page" target="_blank" rel="noopener noreferrer">SOURCE</a>
+</nav>
+</div>
+</footer>
+</body></html>

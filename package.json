@@ -1,0 +1,12 @@
+{
+  "name": "yamanist-page",
+  "version": "1.0.0",
+  "description": "Dynamic repo ordering backend for YAMANIST page",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.4"
+  }
+}

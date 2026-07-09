@@ -1,0 +1,7 @@
+name = "yamanist-discord-worker"
+main = "worker.js"
+compatibility_date = "2024-09-23"
+
+[vars]
+RATE_LIMIT_WINDOW_MS = "60000"
+RATE_LIMIT_MAX = "5"
