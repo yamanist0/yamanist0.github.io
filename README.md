@@ -83,7 +83,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Yamanist Page Screenshot][product-screenshot]](https://github.com/yamanist0/yamanist-page)
+<img width="1831" height="922" alt="image" src="https://github.com/user-attachments/assets/32bd4d85-6959-403c-a12e-52aeccf5799e" />
+
 
 A personal portfolio website in the style of a terminal UI. Yamanist Page shows GitHub repos and Discord status, and a command-like notes panel that sends messages to a Cloudflare Worker & Discord webhook. The project includes a minimal front end, a local Node.js server for persistent state and a Cloudflare Worker to deliver the notes, and tries to be intuitive and extensible, modern, and interactive.
 
