@@ -497,11 +497,9 @@
 <input id="dynamic-placeholder-input" class="flex-grow bg-transparent border-none focus:ring-0 text-primary font-code-label text-code-label placeholder-on-surface-variant/50 w-full" placeholder="Leave a note or command..." type="text"/>
 <div class="flex gap-2">
 <button id="execute-command" class="bg-primary text-background font-code-label text-code-label px-6 py-2 rounded-sm hover:bg-secondary-fixed transition-colors whitespace-nowrap">EXECUTE</button>
-<button id="save-order-button" class="hidden bg-surface text-primary font-code-label text-code-label px-6 py-2 rounded-sm border border-outline-variant hover:bg-surface/90 transition-colors whitespace-nowrap">SAVE ORDER</button>
 </div>
 </div>
 <div id="command-status-message" class="mt-3 text-on-surface-variant font-code-label text-sm"></div>
-<div id="admin-sort-hint" class="mt-2 hidden text-primary font-code-label text-sm">Admin drag sort mode enabled. Drag repos by the handle, then save the new order.</div>
 </section>
 <script>
   const placeholderInput = document.getElementById('dynamic-placeholder-input');
@@ -549,26 +547,11 @@
   }
 </script>
 <script>
-  let draggedCard = null;
-  let dragDisabled = false;
-  let adminMode = false;
-
   async function loadGitHubRepos() {
     const repoList = document.getElementById('repo-list');
     const repoLoading = document.getElementById('repo-loading');
     const repoEmpty = document.getElementById('repo-empty');
     if (!repoList) return;
-
-    adminMode = sessionStorage.getItem('adminEnabled') === 'true';
-    const saveButton = document.getElementById('save-order-button');
-    const adminHint = document.getElementById('admin-sort-hint');
-    if (adminMode) {
-      saveButton?.classList.remove('hidden');
-      adminHint?.classList.remove('hidden');
-    } else {
-      saveButton?.classList.add('hidden');
-      adminHint?.classList.add('hidden');
-    }
 
     try {
       const response = await fetch('https://api.github.com/users/yamanist0/repos?sort=pushed&per_page=20');
@@ -585,21 +568,13 @@
 
       const order = await fetchRepoOrder();
       const sortedRepos = sortReposByOrder(repos, order?.repoOrder);
-      const isAdmin = adminMode;
 
       sortedRepos.forEach((repo) => {
         const card = document.createElement('article');
         card.className = 'group border border-outline-variant hover:border-primary/50 transition-colors rounded-DEFAULT p-5 bg-surface/50 backdrop-blur-sm cursor-pointer relative overflow-hidden repo-card';
-        card.setAttribute('draggable', isAdmin ? 'true' : 'false');
         card.dataset.fullName = repo.full_name || `${repo.owner?.login}/${repo.name}`;
-        if (isAdmin) {
-          card.classList.add('admin-draggable');
-        }
-
-        let dragStarted = false;
 
         card.innerHTML = `
-          <span class="material-symbols-outlined drag-handle" title="Drag to reorder">drag_indicator</span>
           <div class="absolute left-0 top-0 h-full w-1 bg-primary/0 group-hover:bg-primary/50 transition-colors"></div>
           <div class="flex justify-between items-start mb-3">
             <h3 class="font-headline-md text-[24px] font-semibold text-primary">${repo.name}</h3>
@@ -612,56 +587,8 @@
           </div>
         `;
 
-        card.addEventListener('click', (event) => {
-          if (dragStarted) {
-            dragStarted = false;
-            event.preventDefault();
-            return;
-          }
+        card.addEventListener('click', () => {
           window.open(repo.html_url, '_blank', 'noopener');
-        });
-
-        card.addEventListener('dragstart', (event) => {
-          if (!adminMode) {
-            event.preventDefault();
-            return;
-          }
-          dragStarted = true;
-          event.dataTransfer.effectAllowed = 'move';
-          event.dataTransfer.setData('text/plain', card.dataset.fullName || '');
-          draggedCard = card;
-          card.classList.add('dragging');
-        });
-
-        card.addEventListener('dragend', () => {
-          card.classList.remove('dragging');
-          draggedCard = null;
-          dragStarted = false;
-        });
-
-        card.addEventListener('dragover', (event) => {
-          if (!adminMode || dragDisabled || !draggedCard) return;
-          event.preventDefault();
-          const target = event.currentTarget;
-          if (target === draggedCard) return;
-          const rect = target.getBoundingClientRect();
-          const next = event.clientY - rect.top > rect.height / 2;
-          repoList.insertBefore(draggedCard, next ? target.nextSibling : target);
-        });
-
-        card.addEventListener('drop', async (event) => {
-          if (!adminMode) return;
-          event.preventDefault();
-          await saveAdminRepoOrder();
-        });
-
-        card.addEventListener('dragenter', () => {
-          if (!adminMode) return;
-          card.classList.add('dragging-over');
-        });
-
-        card.addEventListener('dragleave', () => {
-          card.classList.remove('dragging-over');
         });
 
         repoList.appendChild(card);
@@ -700,7 +627,7 @@
 
   async function fetchRepoOrder() {
     try {
-      const response = await fetch('/api/admin/repos/order');
+      const response = await fetch('repo-order.json', { cache: 'no-store' });
       if (!response.ok) return null;
       return await response.json();
     } catch {
@@ -708,106 +635,16 @@
     }
   }
 
-  async function saveAdminRepoOrder() {
-    const statusMessage = document.getElementById('command-status-message');
-    const adminPassword = sessionStorage.getItem('adminPassword');
-    if (!adminPassword) {
-      statusMessage.textContent = 'Admin password is required to save order.';
-      statusMessage.className = 'mt-3 text-red-500 font-code-label text-sm';
-      return;
-    }
-
-    const repoList = document.getElementById('repo-list');
-    if (!repoList) return;
-    const repoOrder = Array.from(repoList.querySelectorAll('article')).map((card) => card.dataset.fullName).filter(Boolean);
-
-    try {
-      const response = await fetch('/api/admin/repos/order/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: adminPassword, repoOrder }),
-      });
-
-      if (!response.ok) {
-        const result = await response.json();
-        statusMessage.textContent = result.error || 'Unable to save admin order.';
-        statusMessage.className = 'mt-3 text-red-500 font-code-label text-sm';
-        return;
-      }
-
-      statusMessage.textContent = 'Repo order saved.';
-      statusMessage.className = 'mt-3 text-primary font-code-label text-sm';
-    } catch (error) {
-      statusMessage.textContent = 'Unable to save admin order.';
-      statusMessage.className = 'mt-3 text-red-500 font-code-label text-sm';
-      console.error(error);
-    }
-  }
-
-  async function submitAdminCommand(command) {
-    const statusMessage = document.getElementById('command-status-message');
-    if (command.trim() === '/admin remove') {
-      sessionStorage.removeItem('adminEnabled');
-      sessionStorage.removeItem('adminPassword');
-      document.getElementById('save-order-button')?.classList.add('hidden');
-      document.getElementById('admin-sort-hint')?.classList.add('hidden');
-      statusMessage.textContent = 'Admin mode removed. Drag ordering is now disabled.';
-      statusMessage.className = 'mt-3 text-primary font-code-label text-sm';
-      await loadGitHubRepos();
-      return;
-    }
-
-    try {
-      const response = await fetch('/api/admin/repos/order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ command }),
-      });
-
-      const result = await response.json();
-      if (!response.ok) {
-        statusMessage.textContent = result.error || 'Command failed.';
-        statusMessage.className = 'mt-3 text-red-500 font-code-label text-sm';
-        return;
-      }
-
-      statusMessage.textContent = 'Admin order applied. Repo order is now fixed for all visitors.';
-      statusMessage.className = 'mt-3 text-primary font-code-label text-sm';
-      sessionStorage.setItem('adminEnabled', 'true');
-      const password = command.slice(7).trim();
-      sessionStorage.setItem('adminPassword', password);
-      document.getElementById('admin-sort-hint')?.classList.remove('hidden');
-      await loadGitHubRepos();
-    } catch (error) {
-      statusMessage.textContent = 'Unable to apply admin command.';
-      statusMessage.className = 'mt-3 text-red-500 font-code-label text-sm';
-      console.error(error);
-    }
-  }
-
   function setupCommandHandler() {
     const commandInput = document.getElementById('dynamic-placeholder-input');
     const executeButton = document.getElementById('execute-command');
-    const saveButton = document.getElementById('save-order-button');
-    const adminHint = document.getElementById('admin-sort-hint');
-    if (!commandInput || !executeButton || !saveButton) return;
-
-    if (sessionStorage.getItem('adminEnabled') === 'true') {
-      adminHint?.classList.remove('hidden');
-      saveButton.classList.remove('hidden');
-    }
+    if (!commandInput || !executeButton) return;
 
     const runCommand = async () => {
       const command = commandInput.value.trim();
       if (!command) return;
 
-      // Clear the input immediately when anything is submitted
       commandInput.value = '';
-
-      if (command.startsWith('/admin ')) {
-        await submitAdminCommand(command);
-        return;
-      }
 
       const statusMessage = document.getElementById('command-status-message');
       const workerUrl = 'https://calm-wood-a478.ugivvvv.workers.dev';
@@ -839,7 +676,6 @@
     };
 
     executeButton.addEventListener('click', runCommand);
-    saveButton.addEventListener('click', saveAdminRepoOrder);
     commandInput.addEventListener('keydown', (event) => {
       if (event.key === 'Enter') {
         event.preventDefault();
