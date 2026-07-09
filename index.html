@@ -3,6 +3,18 @@
 <html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="description" content="Yamanist Page is a terminal-inspired personal website with GitHub repos, Discord presence, and interactive notes."/>
+<meta property="og:title" content="YAMANIST | The Terminal Grid"/>
+<meta property="og:description" content="A terminal-inspired personal website with GitHub repos, Discord presence, and interactive notes."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://yamanist0.github.io/"/>
+<meta property="og:image" content="https://yamanist0.github.io/images/logo.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="YAMANIST | The Terminal Grid"/>
+<meta name="twitter:description" content="A terminal-inspired personal website with GitHub repos, Discord presence, and interactive notes."/>
+<meta name="twitter:image" content="https://yamanist0.github.io/images/logo.png"/>
 <title>YAMANIST | The Terminal Grid</title>
 <link rel="icon" href="images/icon.ico" type="image/x-icon"/>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Geist:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
@@ -661,15 +673,17 @@
   }
 
   function sortReposByOrder(repos, order) {
+    const repoList = Array.isArray(repos) ? [...repos] : [];
+
     if (!Array.isArray(order) || order.length === 0) {
-      return repos.sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
+      return repoList.sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at));
     }
 
     const orderMap = new Map(order.map((fullName, index) => [fullName, index]));
     const known = [];
     const unknown = [];
 
-    repos.forEach((repo) => {
+    repoList.forEach((repo) => {
       const fullName = repo.full_name || `${repo.owner?.login}/${repo.name}`;
       if (orderMap.has(fullName)) {
         known.push({ repo, index: orderMap.get(fullName) });
