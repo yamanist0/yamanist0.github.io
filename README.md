@@ -218,7 +218,7 @@ Thanks to the following resources and platforms that helped shape this project:
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/yamanist0/yamanist-page.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/yamanist0/yamanist0.github.io.svg?style=for-the-badge
 [contributors-url]: https://github.com/yamanist0/yamanist0.github.io/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/yamanist0/yamanist0.github.io.svg?style=for-the-badge
 [forks-url]: https://github.com/yamanist0/yamanist-page/network/members
