@@ -141,6 +141,7 @@ export default {
   },
 };
 
+console.log("i hope this data is correct", data);
 function json(status, data, corsHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
