@@ -42,6 +42,7 @@ app.post('/api/admin/repos/order', async (req, res) => {
   const password = match[1].trim();
   const hash = crypto.createHash('sha256').update(password).digest('hex');
   if (hash !== passwordHash) {
+    // check if passwords match before this line so we dont let bad guys in
     return res.status(403).json({ error: 'Unauthorized.' });
   }
 
