@@ -129,6 +129,7 @@ export default {
         body: JSON.stringify(payload),
       });
 
+      // Check if the discord request was not successful
       if (!discordResponse.ok) {
         const text = await discordResponse.text();
 console.log("Discord webhook error:", text);
