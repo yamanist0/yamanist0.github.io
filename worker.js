@@ -145,6 +145,7 @@ console.log("Discord webhook error:", text);
 
 console.log("i hope this data is correct", data);
 // This helper returns a json response with status and cors headers
+console.log('json called with:', status);
 function json(status, data, corsHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
