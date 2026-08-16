@@ -2,7 +2,7 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const origin = request.headers.get('Origin') || '*';
-    const corsHeaders = {
+    const cors = {
       'Access-Control-Allow-Origin': origin === 'null' ? '*' : origin,
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'content-type',
@@ -10,11 +10,11 @@ export default {
     };
 
     if (request.method === 'OPTIONS') {
-      return new Response(null, { status: 204, headers: corsHeaders });
+      return new Response(null, { status: 204, headers: cors });
     }
 
     if (request.method === 'GET' && url.pathname === '/') {
-      return json(200, { ok: true, message: 'Yamanist Discord worker is running.' }, corsHeaders);
+      return json(200, { ok: true, message: 'Yamanist Discord worker is running.' }, cors);
     }
 
     if (request.method === 'GET' && url.pathname === '/avatar') {
@@ -31,7 +31,7 @@ export default {
       } else if (userId && avatarHash) {
         avatarUrl = `https://cdn.discordapp.com/avatars/${encodeURIComponent(userId)}/${encodeURIComponent(avatarHash)}.${format}?size=${encodeURIComponent(size)}`;
       } else {
-        return json(400, { error: 'userId and avatarHash are required for avatar proxying.' }, corsHeaders);
+        return json(400, { error: 'userId and avatarHash are required for avatar proxying.' }, cors);
       }
 
       try {
@@ -42,7 +42,7 @@ export default {
         });
 
         if (!avatarResponse.ok) {
-          return json(502, { error: 'Discord avatar fetch failed.', status: avatarResponse.status }, corsHeaders);
+          return json(502, { error: 'Discord avatar fetch failed.', status: avatarResponse.status }, cors);
         }
 
         const contentType = avatarResponse.headers.get('content-type') || 'image/png';
@@ -51,20 +51,20 @@ export default {
           headers: {
             'content-type': contentType,
             'cache-control': 'public, max-age=3600',
-            ...corsHeaders,
+            ...cors,
           },
         });
       } catch {
-        return json(502, { error: 'Discord avatar fetch failed.' }, corsHeaders);
+        return json(502, { error: 'Discord avatar fetch failed.' }, cors);
       }
     }
 
     if (request.method !== 'POST') {
-      return json(404, { error: 'Not found.' }, corsHeaders);
+      return json(404, { error: 'Not found.' }, cors);
     }
 
     if (url.pathname !== '/' && url.pathname !== '/discord') {
-      return json(404, { error: 'Not found.' }, corsHeaders);
+      return json(404, { error: 'Not found.' }, cors);
     }
 
     const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-real-ip') || 'unknown';
@@ -92,11 +92,11 @@ export default {
       const message = typeof body?.message === 'string' ? body.message.trim() : '';
 
       if (!message) {
-        return json(400, { error: 'Message is required.' }, corsHeaders);
+        return json(400, { error: 'Message is required.' }, cors);
       }
 
       if (!env.DISCORD_WEBHOOK_URL) {
-        return json(500, { error: 'DISCORD_WEBHOOK_URL is not configured.' }, corsHeaders);
+        return json(500, { error: 'DISCORD_WEBHOOK_URL is not configured.' }, cors);
       }
 
       const payload = {
@@ -133,12 +133,12 @@ export default {
       if (!discordResponse.ok) {
         const text = await discordResponse.text();
 console.log("Discord webhook error:", text);
-        return json(502, { error: 'Discord webhook failed.', detail: text }, corsHeaders);
+        return json(502, { error: 'Discord webhook failed.', detail: text }, cors);
       }
 
-      return json(200, { ok: true, message: 'Delivered to Discord webhook.' }, corsHeaders);
+      return json(200, { ok: true, message: 'Delivered to Discord webhook.' }, cors);
     } catch {
-      return json(400, { error: 'Invalid JSON body.' }, corsHeaders);
+      return json(400, { error: 'Invalid JSON body.' }, cors);
     }
   },
 };
