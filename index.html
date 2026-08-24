@@ -617,7 +617,7 @@
                 <div class="h-full bg-primary transition-all" style="width: 40%"></div>
               </div>
             </model-viewer>
-            <div class="absolute left-4 bottom-4 pointer-events-none font-code-label text-code-label text-on-surface-variant bg-surface/80 px-2 py-1 border border-outline-variant">DRAG TO INSPECT // SCROLL TO ZOOM</div>
+            <div class="absolute left-4 bottom-4 pointer-events-none font-code-label text-code-label text-on-surface-variant bg-surface/80 px-2 py-1 border border-outline-variant"><span class="md:hidden">TWO FINGERS TO INSPECT</span><span class="hidden md:inline">DRAG TO INSPECT // SCROLL TO ZOOM</span></div>
           </div>
           <div class="lg:col-span-5 p-6 md:p-8 flex flex-col gap-6">
             <div>
@@ -680,18 +680,39 @@
     <script>
       const redstoneModel = document.getElementById('redstone-model');
       if (redstoneModel) {
-        const updateModelTouchControls = (event) => {
-          if (event.touches.length >= 2) {
-            redstoneModel.setAttribute('camera-controls', '');
-          } else {
-            redstoneModel.removeAttribute('camera-controls');
+        const usesTouchControls = window.matchMedia('(pointer: coarse)').matches;
+        let previousTouchCenter = null;
+
+        if (usesTouchControls) {
+          redstoneModel.removeAttribute('camera-controls');
+        }
+
+        const rotateModelWithTwoFingers = (event) => {
+          if (!usesTouchControls || event.touches.length !== 2) {
+            previousTouchCenter = null;
+            return;
           }
+
+          event.preventDefault();
+          const touchCenter = {
+            x: (event.touches[0].clientX + event.touches[1].clientX) / 2,
+            y: (event.touches[0].clientY + event.touches[1].clientY) / 2,
+          };
+
+          if (previousTouchCenter) {
+            const orbit = redstoneModel.getCameraOrbit();
+            const theta = orbit.theta - (touchCenter.x - previousTouchCenter.x) * 0.01;
+            const phi = Math.min(Math.PI - 0.1, Math.max(0.1, orbit.phi - (touchCenter.y - previousTouchCenter.y) * 0.01));
+            redstoneModel.cameraOrbit = `${theta}rad ${phi}rad ${orbit.radius}m`;
+          }
+
+          previousTouchCenter = touchCenter;
         };
 
-        redstoneModel.addEventListener('touchstart', updateModelTouchControls, { capture: true, passive: true });
-        redstoneModel.addEventListener('touchmove', updateModelTouchControls, { capture: true, passive: true });
-        redstoneModel.addEventListener('touchend', updateModelTouchControls, { capture: true, passive: true });
-        redstoneModel.addEventListener('touchcancel', updateModelTouchControls, { capture: true, passive: true });
+        redstoneModel.addEventListener('touchstart', rotateModelWithTwoFingers, { passive: false });
+        redstoneModel.addEventListener('touchmove', rotateModelWithTwoFingers, { passive: false });
+        redstoneModel.addEventListener('touchend', () => { previousTouchCenter = null; }, { passive: true });
+        redstoneModel.addEventListener('touchcancel', () => { previousTouchCenter = null; }, { passive: true });
       }
     </script>
     <section class="md:col-span-12 mt-8" id="competitions">
