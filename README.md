@@ -30,7 +30,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/yamanist0/yamanist-page">
+  <a href="https://github.com/yamanist0/yamanist0.github.io">
     <img src="images/logo.png" alt="Yamanist Page Logo" width="80" height="80">
   </a>
 
@@ -39,14 +39,14 @@
   <p align="center">
     A terminal-inspired personal page for GitHub projects, Discord presence, and project notes.
     <br />
-    <a href="https://github.com/yamanist0/yamanist-page"><strong>Explore the project »</strong></a>
+    <a href="https://github.com/yamanist0/yamanist0.github.io"><strong>Explore the project »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/yamanist0/yamanist-page">View Repository</a>
+    <a href="https://github.com/yamanist0/yamanist0.github.io">View Repository</a>
     &middot;
-    <a href="https://github.com/yamanist0/yamanist-page/issues">Report Issue</a>
+    <a href="https://github.com/yamanist0/yamanist0.github.io/issues">Report Issue</a>
     &middot;
-    <a href="https://github.com/yamanist0/yamanist-page/pulls">Request Feature</a>
+    <a href="https://github.com/yamanist0/yamanist0.github.io/pulls">Request Feature</a>
   </p>
 </div>
 
@@ -83,7 +83,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Yamanist Page Screenshot][product-screenshot]](https://github.com/yamanist0/yamanist-page)
+[![Yamanist Page Screenshot][product-screenshot]](https://github.com/yamanist0/yamanist0.github.io)
 
 A personal portfolio website in the style of a terminal UI. Yamanist Page shows GitHub repos and Discord status, and a command-like notes panel that sends messages to a Cloudflare Worker & Discord webhook. The project includes a minimal front end, a local Node.js server for persistent state and a Cloudflare Worker to deliver the notes, and tries to be intuitive and extensible, modern, and interactive.
 
@@ -123,11 +123,11 @@ Make sure you have the following installed:
 
 1. Clone the repository
    ```sh
-   git clone https://github.com/yamanist0/yamanist-page.git
+   git clone https://github.com/yamanist0/yamanist0.github.io.git
    ```
 2. Open the project folder
    ```sh
-   cd yamanist-page
+   cd yamanist0.github.io
    ```
 3. Install dependencies
    ```sh
@@ -194,7 +194,7 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
 Yaman - [@yamanist0](https://github.com/yamanist0)
 
-Project Link: [https://github.com/yamanist0/yamanist-page](https://github.com/yamanist0/yamanist-page)
+Project Link: [https://github.com/yamanist0/yamanist0.github.io](https://github.com/yamanist0/yamanist0.github.io)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -217,17 +217,17 @@ Thanks to the following resources and platforms that helped shape this project:
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/yamanist0/yamanist-page.svg?style=for-the-badge
-[contributors-url]: https://github.com/yamanist0/yamanist-page/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/yamanist0/yamanist-page.svg?style=for-the-badge
-[forks-url]: https://github.com/yamanist0/yamanist-page/network/members
-[stars-shield]: https://img.shields.io/github/stars/yamanist0/yamanist-page.svg?style=for-the-badge
-[stars-url]: https://github.com/yamanist0/yamanist-page/stargazers
-[issues-shield]: https://img.shields.io/github/issues/yamanist0/yamanist-page.svg?style=for-the-badge
-[issues-url]: https://github.com/yamanist0/yamanist-page/issues
+[contributors-shield]: https://img.shields.io/github/contributors/yamanist0/yamanist0.github.io.svg?style=for-the-badge
+[contributors-url]: https://github.com/yamanist0/yamanist0.github.io/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/yamanist0/yamanist0.github.io.svg?style=for-the-badge
+[forks-url]: https://github.com/yamanist0/yamanist0.github.io/network/members
+[stars-shield]: https://img.shields.io/github/stars/yamanist0/yamanist0.github.io.svg?style=for-the-badge
+[stars-url]: https://github.com/yamanist0/yamanist0.github.io/stargazers
+[issues-shield]: https://img.shields.io/github/issues/yamanist0/yamanist0.github.io.svg?style=for-the-badge
+[issues-url]: https://github.com/yamanist0/yamanist0.github.io/issues
 [product-screenshot]: https://placehold.co/800x400?text=Yamanist+Page
-[license-shield]: https://img.shields.io/github/license/yamanist0/yamanist-page.svg?style=for-the-badge
-[license-url]: https://github.com/yamanist0/yamanist-page/blob/main/LICENSE
+[license-shield]: https://img.shields.io/github/license/yamanist0/yamanist0.github.io.svg?style=for-the-badge
+[license-url]: https://github.com/yamanist0/yamanist0.github.io/blob/main/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/ahmet-yaman-alio%C4%9Flu-072822343/
 [product-screenshot]: https://placehold.co/800x400?text=Yamanist+Page
@@ -247,3 +247,11 @@ Thanks to the following resources and platforms that helped shape this project:
 [Bootstrap-url]: https://getbootstrap.com
 [JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
 [JQuery-url]: https://jquery.com "# yamanist0.github.io" 
+"# modstudioai-webpage" 
+
+<br>
+<hr>
+<p align="center">
+  <small>Made with 🤍 by <a href="https://github.com/yamanist0">yamanist</a></small>
+</p>
+
