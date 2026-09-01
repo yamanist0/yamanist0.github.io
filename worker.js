@@ -141,6 +141,7 @@ export default {
   },
 };
 
+// Helper to easily send back json responses
 function json(status, data, corsHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
