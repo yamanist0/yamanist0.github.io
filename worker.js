@@ -143,6 +143,7 @@ export default {
 
 // Helper to easily send back json responses
 console.log("json function initialized");
+// helper to send json back easily
 function json(status, data, corsHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
