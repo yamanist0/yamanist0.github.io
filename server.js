@@ -14,6 +14,7 @@ async function loadOrder() {
     const val = await fs.readFile(dataPath, 'utf8');
     console.log("Loaded val from file:", val);
     return JSON.parse(val);
+  // fallback if file is missing or broken
   } catch {
     return { sortKey: null, createdAt: null };
   }
