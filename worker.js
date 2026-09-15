@@ -130,7 +130,7 @@ export default {
       });
 
       if (!discordResponse.ok) {
-        // grab the error text so we can see what went wrong
+// get the error text so we can see what is wrong
         const text = await discordResponse.text();
         console.log("Discord error:", text);
         return json(502, { error: 'Discord webhook failed.', detail: text }, corsHeaders);
