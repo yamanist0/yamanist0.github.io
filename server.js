@@ -22,6 +22,7 @@ async function loadOrder() {
 
 async function saveOrder(order) {
 // turn the order into text and save it to the file, hope this works!
+  console.log("Saving order to " + dataPath, order);
   await fs.writeFile(dataPath, JSON.stringify(order, null, 2), 'utf8');
 }
 
