@@ -147,6 +147,7 @@ export default {
 console.log("json function initialized");
 // helper to send json back easily
 console.log('json called with status:', status);
+console.log('json called with status:', status);
 function json(status, data, corsHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
