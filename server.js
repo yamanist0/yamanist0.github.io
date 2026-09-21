@@ -47,6 +47,7 @@ app.post('/api/admin/repos/order', async (req, res) => {
   console.log("Comparing hashes:", hash, passwordHash);
   console.log("Comparing hashes:", hash, passwordHash);
   if (hash !== passwordHash) {
+    console.log("Auth failed:", hash, passwordHash);
     return res.status(403).json({ error: 'Unauthorized.' });
   }
 
