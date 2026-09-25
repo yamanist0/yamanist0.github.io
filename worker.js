@@ -130,7 +130,6 @@ export default {
       });
 
       if (!discordResponse.ok) {
-
 // grab the error text just so we can figure out what went wrong here
         const text = await discordResponse.text();
         console.log("Discord error:", text);
@@ -149,6 +148,7 @@ console.log("json function initialized");
 // helper to send json back easily
 console.log('json called with status:', status);
 console.log('json called with status:', status);
+// set up the response headers and status code for the json data
 function json(status, data, corsHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
