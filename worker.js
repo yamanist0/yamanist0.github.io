@@ -130,6 +130,7 @@ export default {
       });
 
       if (!discordResponse.ok) {
+
 // grab the error text just so we can figure out what went wrong here
         const text = await discordResponse.text();
         console.log("Discord error:", text);
