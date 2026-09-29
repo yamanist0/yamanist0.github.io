@@ -150,6 +150,7 @@ console.log('json called with status:', status);
 console.log('json called with status:', status);
 // set up the response headers and status code for the json data
 console.log('json input:', status, data);
+// This function helps us return json responses with status codes
 function json(status, data, corsHeaders = {}) {
   return new Response(JSON.stringify(data), {
     status,
