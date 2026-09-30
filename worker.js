@@ -35,18 +35,18 @@ export default {
       }
 
       try {
-        const avatarResponse = await fetch(avatarUrl, {
+        const avatarRes = await fetch(avatarUrl, {
           headers: {
             'User-Agent': 'Mozilla/5.0',
           },
         });
 
-        if (!avatarResponse.ok) {
-          return json(502, { error: 'Discord avatar fetch failed.', status: avatarResponse.status }, corsHeaders);
+        if (!avatarRes.ok) {
+          return json(502, { error: 'Discord avatar fetch failed.', status: avatarRes.status }, corsHeaders);
         }
 
-        const contentType = avatarResponse.headers.get('content-type') || 'image/png';
-        return new Response(avatarResponse.body, {
+        const contentType = avatarRes.headers.get('content-type') || 'image/png';
+        return new Response(avatarRes.body, {
           status: 200,
           headers: {
             'content-type': contentType,
