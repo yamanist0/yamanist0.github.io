@@ -12,7 +12,7 @@ const passwordHash = '37ed68b907fbcf27dd1cd3306724276ee6afc0ea2a7321919f7ab683d1
 async function loadOrder() {
   try {
     const val = await fs.readFile(dataPath, 'utf8');
-    console.log("Loaded val from file:", val);
+console.log("Loaded order:", val);
     return JSON.parse(val);
   // fallback if file is missing or broken
   } catch {
